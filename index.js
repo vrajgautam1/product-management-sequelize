@@ -3,7 +3,7 @@ const app = express();
 const db = require('./models'); 
 const config = require('./src/config/config')
 const testConnection = require("./testConnection")
-const mainRouter = require("./routes/productRouter")
+const mainRouter = require("./routes/index")
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
