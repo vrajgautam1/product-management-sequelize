@@ -2,7 +2,7 @@
 
 This project is a backend API built using **Node.js**, **Express**, and **Sequelize (MySQL)**. 
 
-It demonstrates how to manage product data in an electronics store-like system using proper **REST principles** and **Sequelize ORM** for database operations.
+It demonstrates how to manage product data in a store-like system using proper **REST principles** and **Sequelize ORM** for database operations.
 
 ---
 
