@@ -14,10 +14,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
-    phone: {
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    role:{
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      defaultValue : "user"
     }
   }, {
     timestamps: true

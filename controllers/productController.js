@@ -57,10 +57,10 @@ module.exports.fetchProducts = async (req, res) => {
         // }
 
         let products = await productModel.findAll(options);
-        console.log("products fetched successfully");
+        // console.log("products fetched successfully");
         return res
             .status(200)
-            .json({ success: "product/s fetched successfully", data: products });
+            .json({ success: "product/s fetched successfully", data: products});
     } catch (error) {
         console.log(error.message);
         return res.status(400).json({ error: error.message });

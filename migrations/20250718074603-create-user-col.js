@@ -28,6 +28,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      role: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: "user",
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -46,8 +51,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-
     await queryInterface.dropTable("Users");
-
   },
 };
