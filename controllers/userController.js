@@ -5,20 +5,28 @@ const jwt = require("jsonwebtoken");
 const { where } = require("sequelize");
 require("dotenv").config();
 const secretKey = process.env.SECRETKEY;
+const { SigninSchema, SignupSchema } = require("../validations/userValidation");
 
 module.exports.signUp = async (req, res) => {
+  const { error } = SignupSchema.validate(req.body);
+
+  if (error) {
+    const messages = error.details.map((err) => err.message);
+    return res.status(400).json({ error: messages });
+  }
+
   const { name, email, password } = req.body;
-  if (!name || !email || !password) {
-    return res.status(400).json({ error: "name or email is missing" });
-  }
+  // if (!name || !email || !password) {
+  //   return res.status(400).json({ error: "name or email is missing" });
+  // }
 
-  const passwordRegex = /^.{8,}$/;
+  // const passwordRegex = /^.{8,}$/;
 
-  if (!passwordRegex.test(password)) {
-    return res
-      .status(400)
-      .json({ error: "password must be atleast 8 characters long" });
-  }
+  // if (!passwordRegex.test(password)) {
+  //   return res
+  //     .status(400)
+  //     .json({ error: "password must be atleast 8 characters long" });
+  // }
   try {
     let encryptedPassword = await bcrypt.hash(password, 5);
     let existingUser = await user.findOne({ where: { email: email } });
@@ -43,6 +51,13 @@ module.exports.signUp = async (req, res) => {
 };
 
 module.exports.login = async (req, res) => {
+  const { errors } = SigninSchema.validate(req.body);
+
+  if (errors) {
+    const messages = error.details.map((err) => err.message);
+    return res.status(400).json({ error: messages });
+  }
+
   const { password, email } = req.body;
 
   try {
@@ -55,20 +70,26 @@ module.exports.login = async (req, res) => {
 
     //-2 check if the pw entered is true - compare the pw in body with existingUser's pw
     let pwCorrect = await bcrypt.compare(password, existingUser.password);
-    
-    console.log(pwCorrect)
+
+    console.log(pwCorrect);
 
     if (!pwCorrect) {
       return res.status(400).json({ error: "password incorrect" });
     }
 
-    //-3 make jwt token 
-    const token = jwt.sign({ email: existingUser.email, role: existingUser.role }, secretKey, {
-      expiresIn: "12h",
-    });
+    //-3 make jwt token
+    const token = jwt.sign(
+      { email: existingUser.email, role: existingUser.role },
+      secretKey,
+      {
+        expiresIn: "12h",
+      }
+    );
 
     //-4 send a response
-    return res.status(200).json({ success: "user logged in successfully" , token:token});
+    return res
+      .status(200)
+      .json({ success: "user logged in successfully", token: token });
   } catch (error) {}
 };
 
